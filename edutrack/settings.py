@@ -36,8 +36,15 @@ ALLOWED_HOSTS = [
     ).split(',')
     if host.strip()
 ]
+CSRF_TRUSTED_ORIGINS = [
+    "https://edutrack-d4nf.onrender.com",
+]
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 # Application definition
 
 INSTALLED_APPS = [
@@ -141,9 +148,3 @@ STORAGES = {
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
-
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
