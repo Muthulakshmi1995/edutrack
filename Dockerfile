@@ -16,7 +16,6 @@ RUN python manage.py collectstatic --noinput \
     && chown -R app:app /app /data
 
 USER app
-
 EXPOSE 8000
 
-CMD ["gunicorn", "edutrack.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && gunicorn edutrack.wsgi:application --bind 0.0.0.0:${PORT:-8000}"]
