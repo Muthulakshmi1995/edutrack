@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Attendance history - {{ student }}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'sms/styles.css' %}">
+</head>
+<body>
+    <main class="page">
+        <header class="page-header">
+            <div>
+                <p class="eyebrow">{{ student.batch.name }}</p>
+                <h1>{{ student.first_name }} {{ student.last_name }}</h1>
+                <p class="muted">{{ student.email }}</p>
+            </div>
+            <a class="button button-secondary" href="{% url 'attendance_report' student.batch_id %}">Batch report</a>
+        </header>
+        <section>
+            <h2>Courses and certificates</h2>
+            <ul class="batch-list">
+                {% for course in courses %}
+                    <li class="batch-item">
+                        <div>
+                            <strong>{{ course.name }}</strong>
+                            <p class="muted">{{ course.description }}</p>
+                        </div>
+                        <a class="button" href="{% url 'issue_certificate' student.id course.id %}">Issue Certificate</a>
+                    </li>
+                {% empty %}
+                    <li class="empty-state">No courses are assigned to this student.</li>
+                {% endfor %}
+            </ul>
+        </section>
+        <h2>Attendance history</h2>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in attendance_records %}
+                        <tr>
+                            <td>{{ record.date|date:"F j, Y" }}</td>
+                            <td><span class="status status--{{ record.status|lower }}">{{ record.get_status_display }}</span></td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="2">No attendance records yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <p><a href="{% url 'student_list' %}">Back to students</a></p>
+    </main>
+</body>
+</html>
