@@ -17,5 +17,4 @@ RUN python manage.py collectstatic --noinput \
 
 USER app
 EXPOSE 8000
-
-CMD ["sh", "-c", "python manage.py migrate && gunicorn edutrack.wsgi:application --bind 0.0.0.0:${PORT:-8000}"]
+CMD ["sh", "-c", "python manage.py migrate && (python manage.py createsuperuser --noinput || true) && exec gunicorn edutrack.wsgi:application --bind 0.0.0.0:${PORT:-8000}"]
